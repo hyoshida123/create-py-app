@@ -1,0 +1,115 @@
+main.py: | 
+  def main():
+      return
+
+  if __name__ == '__main__':
+      main()
+environment_variables.py: | 
+  import os
+  import sys
+  from dotenv import load_dotenv
+
+  load_dotenv(verbose=True)
+  # Search .env in the current project folder with sys.path[1]
+  load_dotenv(sys.path[1])
+
+  AWS_HOST_URL = os.environ.get("AWS_HOST_URL")
+  AWS_DATABASE_NAME = os.environ.get("AWS_DATABASE_NAME")
+  AWS_DATABASE_USERNAME = os.environ.get("AWS_DATABASE_USERNAME")
+  AWS_PASSWORD = os.environ.get("AWS_PASSWORD")
+.env: |
+  AWS_HOST_URL="Your AWS URL"
+  AWS_DATABASE_NAME="Your Database Name"
+  AWS_DATABASE_USERNAME="Your Username"
+  AWS_PASSWORD="Your Password"
+Dockerfile: |
+  FROM python:3.10.8-slim as builder
+  ENV PYTHONUNBUFFERED=1
+  RUN useradd --create-home --shell /bin/bash app_user
+  WORKDIR /home/app_user
+  RUN pip install --upgrade pip && pip install poetry==1.1.11
+  COPY pyproject.toml poetry.lock ./
+  RUN poetry export --without-hashes -f requirements.txt > requirements.txt
+  RUN poetry export --without-hashes --dev -f requirements.txt > requirements-dev.txt
+  RUN pip install -r requirements.txt
+  USER app_user\nCOPY . .
+  CMD ["bash"]"
+.pre-commit-config.yaml: |
+  repos:
+  -   repo: https://github.com/ambv/black
+    rev: 22.10.0
+    hooks:
+    - id: black
+      language_version: python3.10
+.gitignore: |
+  __pycache__/
+  .DS_Store
+  .idea/*
+  .env
+README.md: |
+  # $1
+  ## Overview
+
+  ## System Requirements
+  - Python 3.10+
+  - [poetry](https://python-poetry.org/docs/)
+  - Docker
+
+  ## Folder Structure
+  ```
+  .
+  ├── README.md
+  ├── Dockerfile
+  ├── .pre-commit-config.yaml
+  ├── .gitignore
+  ├── environment_variables.py
+  ├── .env
+  ├── pyproject.toml
+  └── main.py
+  ```
+
+  ## Initial Setup
+  .env内に以下ように記述してください
+  ```
+  AWS_HOST_URL="Your AWS Redshift Host URL"
+  AWS_DATABASE_NAME="Your AWS Redshift Name"
+  AWS_DATABASE_USERNAME="Your AWS Redshift Username"
+  AWS_PASSWORD="Your AWS Redshift Password"
+  ```
+  `.env`の設定ができたら、以下のコマンドで
+  ```
+  $ docker build -t $1 --rm .
+  ```
+  でdocker imageをビルドして初期設定は完了です。
+
+  ## Run
+  ```
+  $ docker run -dit --name $1 $1
+  $ docker exec -it $1 bash
+  app_user@a09fab01f538:~$ python main.py
+  ```
+  コンテナのターミナルから出るには、`exit`または`docker stop $1`で出れます。
+
+  ## How to set up code format check
+  ```
+  pre-commit install
+  ```
+  でコードフォマットを設定するとgitにコミットする際にフォーマットチェックをしてくれます。
+pyproject.toml: |
+  [tool.poetry]
+  name = "$1"
+  version = "0.1.0"
+  description = ""
+  authors = ['Your_Name <Your_Address>']
+  readme = "README.md"
+  packages = [{include = "$1"}]
+
+  [tool.poetry.dependencies]
+  python = "^3.10"
+  pre-commit = "^2.20.0"
+  python-dotenv = "^0.21.0"
+
+
+  [build-system]
+  requires = ["poetry-core"]
+  build-backend = "poetry.core.masonry.api"
