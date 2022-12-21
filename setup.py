@@ -19,6 +19,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ),
     entry_points={
-        'console_scripts': ['create_py_app=create_py_app.main:main'],
-    }
+        "console_scripts": ["create_py_app=create_py_app.main:main"],
+    },
 )
