@@ -1,7 +1,7 @@
 import os
 import argparse
 import yaml
-from create_files import create_dir, create_file
+from create_files import create_dir, create_file, create_file_with_project_name
 
 
 def main():
@@ -25,8 +25,12 @@ def main():
         )
         create_file(base_dir, ".gitignore", content=yaml_data[".gitignore"])
         create_file(base_dir, "Dockerfile", content=yaml_data["Dockerfile"])
-        create_file(base_dir, "README.md", content=yaml_data["README.md"])
-        create_file(base_dir, "pyproject.toml", content=yaml_data["pyproject.toml"])
+        create_file_with_project_name(
+            base_dir, app_name, "README.md", content=yaml_data["README.md"]
+        )
+        create_file_with_project_name(
+            base_dir, app_name, "pyproject.toml", content=yaml_data["pyproject.toml"]
+        )
     print(f"{app_name} has been created!")
 
 
