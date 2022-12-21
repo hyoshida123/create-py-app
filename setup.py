@@ -4,7 +4,7 @@ with open("README.md", "r") as f:
     long_description = f.read()
 
 setuptools.setup(
-    name="create_tlb_python_app",
+    name="create_py_app",
     version="0.1.0",
     author="Hideaki Yoshida",
     author_email="",
