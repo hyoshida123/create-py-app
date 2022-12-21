@@ -12,7 +12,7 @@ $ pip install create-py-app
 
 ## Run
 ```
-$ create-python-app --name　your_project_name
+$ create-py-app --name　your_project_name
 ```
 
 ## Generated Project Structure
