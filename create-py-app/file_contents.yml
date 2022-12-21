@@ -36,7 +36,7 @@ Dockerfile: |
   CMD ["bash"]"
 .pre-commit-config.yaml: |
   repos:
-  -   repo: https://github.com/ambv/black
+  - repo: https://github.com/ambv/black
     rev: 22.10.0
     hooks:
     - id: black
