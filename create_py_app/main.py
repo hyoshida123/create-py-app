@@ -13,7 +13,7 @@ def main():
     parser.add_argument("--name", required=True, type=str)
     app_name = parser.parse_args().name
     base_dir = create_dir(os.getcwd(), app_name)
-    with open("file_contents.yml", "r") as f:
+    with open("create_py_app/file_contents.yml", "r") as f:
         yaml_data = yaml.safe_load(f)
         for key in yaml_data.keys():
             if key in ["README.md", "pyproject.toml"]:
