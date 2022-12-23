@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="create-py-app",
-    version="0.1.3",
+    version="0.1.9",
     author="Hideaki Yoshida",
     author_email="",
     description="A tool for creating a simple python framework",
@@ -13,6 +13,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/hyoshida123/create-py-app",
     packages=setuptools.find_packages(),
+    package_data={"": ["file_contents.yml"]},
+    include_package_data=True,
     install_requires=["pyyaml"],
     classifiers=[
         "Programming Language :: Python :: 3",
